@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Unit 9 Practice: What Derivatives Tell You</title>
+<title>Unit 9 Practice</title>
 <meta name="description" content="Practice finding critical points, sign charts, absolute extrema, concavity and the Mean Value Theorem with feedback on each line of your work.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2808,13 +2808,13 @@ var selfcheck = (function () {
    ==================================================================================== */
 
 /* ---------------- links ---------------- */
-var PAUL_C = 'https://tutorial.math.lamar.edu/Classes/CalcI/', PAUL_P = 'https://tutorial.math.lamar.edu/Problems/CalcI/';
+var PAUL_C = 'https://tutorial.math.lamar.edu/Classes/CalcI/';
 function paulEx(page, title, ex) { return [PAUL_C + page + '.aspx', 'Paul’s Online Math Notes: ' + title + (ex ? ', ' + ex : '')]; }
 var T_CRIT = paulEx('CriticalPoints', 'Critical Points', 'Example 1');
 var T_CRIT2 = paulEx('CriticalPoints', 'Critical Points', 'Example 2');
 var T_SIGN = paulEx('ShapeofGraphPtI', 'The Shape of a Graph, Part I', 'Example 1');
 var T_FDT = paulEx('ShapeofGraphPtI', 'The Shape of a Graph, Part I', 'the First Derivative Test');
-var T_FPRIME = [PAUL_P + 'ShapeofGraphPtI.aspx', 'Paul’s Online Math Notes: The Shape of a Graph, Part I, Practice Problem 3'];
+var T_FPRIME = ['https://rizecomputerscience.github.io/calc1-sketching-the-derivative/#sec-reverse', 'Sketching the Derivative, section 4: Reading f From f′'];
 var T_ABS = paulEx('AbsExtrema', 'Finding Absolute Extrema', 'Examples 1 and 2');
 var T_CONC = paulEx('ShapeofGraphPtII', 'The Shape of a Graph, Part II', 'Example 1');
 var T_SDT = paulEx('ShapeofGraphPtII', 'The Shape of a Graph, Part II', 'Example 2');
@@ -2838,7 +2838,7 @@ var FORM = {
 
 /* ---------------- the sections ---------------- */
 var SECTIONS_P = [
-  { id: 'sec-inc', nav: 'Increasing', title: 'Where a Function Increases and Decreases', lede: 'These go with Paul’s [Critical Points](' + T_CRIT[0] + '), Example 1, and [The Shape of a Graph, Part I](' + T_SIGN[0] + '), Example 1 and Practice Problem 3.' },
+  { id: 'sec-inc', nav: 'Increasing', title: 'Where a Function Increases and Decreases', lede: 'These go with Paul’s [Critical Points](' + T_CRIT[0] + '), Example 1, and [The Shape of a Graph, Part I](' + T_SIGN[0] + '), Example 1.' },
   { id: 'sec-fdt', nav: 'First Derivative Test', title: 'The First Derivative Test', lede: 'This goes with Paul’s [Critical Points](' + T_CRIT2[0] + '), Example 2, and [The Shape of a Graph, Part I](' + T_SIGN[0] + '), Example 3.' },
   { id: 'sec-abs', nav: 'Absolute Extrema', title: 'Absolute Extrema on a Closed Interval', lede: 'These go with Paul’s [Finding Absolute Extrema](' + T_ABS[0] + '), Examples 1, 2 and 4.' },
   { id: 'sec-conc', nav: 'Concavity', title: 'Concavity and the Second Derivative Test', lede: 'These go with Paul’s [The Shape of a Graph, Part II](' + T_CONC[0] + '), Examples 1 and 2.' },
@@ -2849,10 +2849,10 @@ var SECTIONS_P = [
 function f1(x) { return 2 * x * x * x - 9 * x * x - 24 * x + 10; }
 function fp2(x) { return (x + 2) * (x - 1) * (x - 1) * (x - 4) / 8; }
 function f2(x) { return Math.pow(x, 5) / 40 - Math.pow(x, 4) / 8 - Math.pow(x, 3) / 8 + 7 * x * x / 8 - x; }
-function f3(x) { return Math.cbrt(x * x) * (x - 5); }
+function f3(x) { return Math.cbrt(x * x) * (x - 10); }
 function f4(x) { return x * x * x - 3 * x * x - 24 * x + 1; }
 function temp5(t) { return t * t * t - 9 * t * t + 24 * t + 60; }
-function f6(x) { return Math.pow(x, 4) + 2 * x * x * x - 12 * x * x + 5; }
+function f6(x) { return Math.pow(x, 4) + 4 * x * x * x - 18 * x * x + 3; }
 function f7(x) { return Math.pow(x, 5) - 15 * x * x * x; }
 function f8(x) { return x * x * x - 2 * x * x + 1; }
 var C8 = (2 + Math.sqrt(13)) / 3;
@@ -2932,44 +2932,44 @@ var PROBLEMS = [
     after: 'One function with this derivative: `f` rises to a relative maximum at `x = −2`, levels off for an instant at `x = 1` and keeps falling, then turns up at the relative minimum at `x = 4`.' },
 
   /* 3. a critical point where f' does not exist; the First Derivative Test */
-  { id: 'p3', sec: 'sec-fdt', task: 'Find and classify the critical points of `f`.', board: ['f(x) = x^(2/3)(x − 5)', '= x^(5/3) − 5x^(2/3)'], teach: T_CRIT2,
+  { id: 'p3', sec: 'sec-fdt', task: 'Find and classify the critical points of `f`.', board: ['f(x) = x^(2/3)(x − 10)', '= x^(5/3) − 10x^(2/3)'], teach: T_CRIT2,
     steps: [
-      { lead: 'Differentiate the second form with the power rule.', ask: 'f′(x) =', ans: '5/3 x^(2/3) - 10/(3x^(1/3))',
-        wrongs: [['(5/3)x^(2/3) - (10/3)x^(-2/3)', 'Subtract 1 from each exponent: `F{2}{3} − 1 = −F{1}{3}`.'],
-          ['(5/3)x^(2/3) - 5x^(-1/3)', 'Multiply by the exponent too: `5 · F{2}{3} = F{10}{3}`.']],
+      { lead: 'Differentiate the second form with the power rule.', ask: 'f′(x) =', ans: '5/3 x^(2/3) - 20/(3x^(1/3))',
+        wrongs: [['(5/3)x^(2/3) - (20/3)x^(-2/3)', 'Subtract 1 from each exponent: `F{2}{3} − 1 = −F{1}{3}`.'],
+          ['(5/3)x^(2/3) - 10x^(-1/3)', 'Multiply by the exponent too: `10 · F{2}{3} = F{20}{3}`.']],
         hints: ['`Dx (x^n) = n x^(n − 1)` works for fractional `n`: the exponents become `F{5}{3} − 1` and `F{2}{3} − 1`.'] },
-      { lead: 'Write `f′(x)` as one fraction over `3x^(1/3)`, as Paul does in Example 2. Type its top.', ask: 'f′(x) = F{1}{3x^(1/3)} ·', ans: '5x - 10',
-        wrongs: [['5x^(2/3) - 10', 'Multiply the first term by `F{x^(1/3)}{x^(1/3)}`. On top, `x^(2/3) · x^(1/3) = x`, so the first term becomes `5x`.'],
-          ['5x + 10', 'The second term is subtracted, so the top is `5x − 10`.'],
-          ['(5x - 10)/(3x^(1/3))', 'That is all of `f′(x)`. Type only its top, the factor that multiplies `F{1}{3x^(1/3)}`.']],
+      { lead: 'Write `f′(x)` as one fraction over `3x^(1/3)`, as Paul does in Example 2. Type its top.', ask: 'f′(x) = F{1}{3x^(1/3)} ·', ans: '5x - 20',
+        wrongs: [['5x^(2/3) - 20', 'Multiply the first term by `F{x^(1/3)}{x^(1/3)}`. On top, `x^(2/3) · x^(1/3) = x`, so the first term becomes `5x`.'],
+          ['5x + 20', 'The second term is subtracted, so the top is `5x − 20`.'],
+          ['(5x - 20)/(3x^(1/3))', 'That is all of `f′(x)`. Type only its top, the factor that multiplies `F{1}{3x^(1/3)}`.']],
         hints: ['Multiply `F{5}{3}x^(2/3)` by `F{x^(1/3)}{x^(1/3)}` so that both terms have the bottom `3x^(1/3)`.'],
         why: 'One fraction shows where `f′` is 0 (its top is 0) and where `f′` does not exist (its bottom is 0).' },
       { lead: 'The bottom, `3x^(1/3)`, is 0 at `x = 0`. Is `x = 0` a critical point?', ok: 0, pick: [
         ['Yes: `f(0) = 0` exists and `f′(0)` does not exist', 'A critical point needs `f(c)` to exist and either `f′(c) = 0` or `f′(c)` not to exist.'],
         ['No, because `f′(0)` is not 0', '`f′(c) = 0` is one way to be a critical point. The other is that `f′(c)` does not exist while `f(c)` does.'],
-        ['No, because 0 is not in the domain of `f`', '`f(0) = 0^(2/3)(0 − 5) = 0`, so 0 is in the domain. Only `f′` fails to exist there.']] },
-      { lead: 'List every critical point.', ask: '"critical points:" x =', list: true, num: true, ans: '0, 2',
-        wrongs: [['2', 'That is where the top is 0. Include `x = 0`, where `f′` does not exist but `f` does.'],
-          [['0, 2, 5', '0, 5', '5'], '`f(5) = 0` is where the graph crosses the x-axis. Critical points come from `f′`: its top is 0 at `x = 2`.']],
-        hints: ['Solve `5x − 10 = 0` for the first one. Add the point where the bottom `3x^(1/3)` is 0.'] },
-      { lead: 'Test `x = −1` in `f′(x) = F{5x − 10}{3x^(1/3)}`. Note that `(−1)^(1/3) = −1`.', ask: 'f′(−1) =', num: true, ans: '5',
-        wrongs: [['-5', 'The bottom is `3(−1)^(1/3) = −3` and the top is `−15`. A negative over a negative is positive.'],
-          ['-6', 'That is `f(−1)`. Put the test point into the derivative `f′`, not into `f`.']],
-        hints: ['Top: `5(−1) − 10`. Bottom: `3 · (−1)`.'] },
-      { lead: 'Test `x = 1`.', ask: 'f′(1) =', num: true, ans: '-5/3',
-        wrongs: [['5/3', 'The top is `5 − 10 = −5` and the bottom is 3, so the quotient is negative.'],
-          ['-4', 'That is `f(1)`. Put the test point into the derivative `f′`, not into `f`.']],
-        hints: ['Top: `5(1) − 10`. Bottom: `3 · 1^(1/3) = 3`.'] },
-      { lead: 'Test `x = 8`, using `8^(1/3) = 2`.', ask: 'f′(8) =', num: true, ans: '5',
-        wrongs: [['15', 'Keep the 3 in the bottom: `3 · 8^(1/3) = 6`.'],
-          ['12', 'That is `f(8)`. Put the test point into the derivative `f′`, not into `f`.']],
-        hints: ['Top: `5(8) − 10`. Bottom: `3 · 2`.'] },
+        ['No, because 0 is not in the domain of `f`', '`f(0) = 0^(2/3)(0 − 10) = 0`, so 0 is in the domain. Only `f′` fails to exist there.']] },
+      { lead: 'List every critical point.', ask: '"critical points:" x =', list: true, num: true, ans: '0, 4',
+        wrongs: [['4', 'That is where the top is 0. Include `x = 0`, where `f′` does not exist but `f` does.'],
+          [['0, 4, 10', '0, 10', '10'], '`f(10) = 0` is where the graph crosses the x-axis. Critical points come from `f′`: its top is 0 at `x = 4`.']],
+        hints: ['Solve `5x − 20 = 0` for the first one. Add the point where the bottom `3x^(1/3)` is 0.'] },
+      { lead: 'Test `x = −1` in `f′(x) = F{5x − 20}{3x^(1/3)}`. Note that `(−1)^(1/3) = −1`.', ask: 'f′(−1) =', num: true, ans: '25/3',
+        wrongs: [['-25/3', 'The bottom is `3(−1)^(1/3) = −3` and the top is `−25`. A negative over a negative is positive.'],
+          ['-11', 'That is `f(−1)`. Put the test point into the derivative `f′`, not into `f`.']],
+        hints: ['Top: `5(−1) − 20`. Bottom: `3 · (−1)`.'] },
+      { lead: 'Test `x = 1`.', ask: 'f′(1) =', num: true, ans: '-5',
+        wrongs: [['5', 'The top is `5 − 20 = −15` and the bottom is 3, so the quotient is negative.'],
+          ['-9', 'That is `f(1)`. Put the test point into the derivative `f′`, not into `f`.']],
+        hints: ['Top: `5(1) − 20`. Bottom: `3 · 1^(1/3) = 3`.'] },
+      { lead: 'Test `x = 8`, using `8^(1/3) = 2`.', ask: 'f′(8) =', num: true, ans: '10/3',
+        wrongs: [['10', 'Keep the 3 in the bottom: `3 · 8^(1/3) = 6`.'],
+          ['-8', 'That is `f(8)`. Put the test point into the derivative `f′`, not into `f`.']],
+        hints: ['Top: `5(8) − 20`. Bottom: `3 · 2`.'] },
       { lead: 'Classify the critical points with the First Derivative Test.', ok: 0, pick: [
-        ['A relative maximum at `x = 0` and a relative minimum at `x = 2`', '`f′` changes from + to − at 0 and from − to + at 2.'],
-        ['A relative minimum at `x = 0` and a relative maximum at `x = 2`', 'At `x = 0`, `f′` changes from + (at `−1`) to − (at 1), which is a relative maximum.', T_FDT],
-        ['Only a relative minimum at `x = 2`; `x = 0` is neither because `f′(0)` does not exist', 'The test uses only the signs on each side. A point where `f′` does not exist can be an extremum, as `|x|` is at 0.', T_FDT]] }],
-    graph: { x: [-2, 7], y: [-12, 8], ticks: { x: 1, y: 4 }, fns: [{ f: f3 }], dots: [{ x: 0, y: 0, label: '(0, 0)', at: 'n' }, { x: 2, y: -4.762, label: '(2, −4.762)', at: 's' }],
-      aria: 'The graph of x to the two-thirds times x minus 5. It rises to a sharp point at the origin with a vertical tangent line, falls to about (2, −4.762), then rises.' },
+        ['A relative maximum at `x = 0` and a relative minimum at `x = 4`', '`f′` changes from + to − at 0 and from − to + at 4.'],
+        ['A relative minimum at `x = 0` and a relative maximum at `x = 4`', 'At `x = 0`, `f′` changes from + (at `−1`) to − (at 1), which is a relative maximum.', T_FDT],
+        ['Only a relative minimum at `x = 4`; `x = 0` is neither because `f′(0)` does not exist', 'The test uses only the signs on each side. A point where `f′` does not exist can be an extremum, as `|x|` is at 0.', T_FDT]] }],
+    graph: { x: [-2, 12], y: [-24, 16], ticks: { x: 2, y: 8 }, fns: [{ f: f3 }], dots: [{ x: 0, y: 0, label: '(0, 0)', at: 'n' }, { x: 4, y: -15.119, label: '(4, −15.119)', at: 's' }],
+      aria: 'The graph of x to the two-thirds times x minus 10. It rises to a sharp point at the origin with a vertical tangent line, falls to about (4, −15.119), then rises.' },
     after: 'At `x = 0` the graph comes to a point with a vertical tangent line, so `f′(0)` does not exist, and it is still a relative maximum.' },
 
   /* 4. absolute extrema on a closed interval, one critical point outside it */
@@ -3050,46 +3050,46 @@ var PROBLEMS = [
     after: 'The relative maximum at 10 a.m. is not the highest temperature of the day. The greenhouse is warmest at 2 p.m.' },
 
   /* 6. concavity and inflection points */
-  { id: 'p6', sec: 'sec-conc', task: 'Find where the graph of `f` is concave up and concave down, and find its inflection points.', board: 'f(x) = x^4 + 2x^3 − 12x^2 + 5', teach: T_CONC,
+  { id: 'p6', sec: 'sec-conc', task: 'Find where the graph of `f` is concave up and concave down, and find its inflection points.', board: 'f(x) = x^4 + 4x^3 − 18x^2 + 3', teach: T_CONC,
     steps: [
       { lead: 'Which sign decides concavity?', ok: 0, pick: [
         ['The sign of `f″`', '`f″ > 0` means concave up and `f″ < 0` means concave down.'],
         ['The sign of `f′`', 'The sign of `f′` decides increasing and decreasing. Concavity has nothing to do with whether the graph rises or falls.'],
         ['The sign of `f`', 'The sign of `f` says whether the graph is above or below the x-axis.']] },
-      { ask: 'f′(x) =', ans: '4x^3 + 6x^2 - 24x',
-        wrongs: [['4x^3 + 6x^2 - 24x + 5', 'The constant 5 has derivative 0. Drop it.']],
+      { ask: 'f′(x) =', ans: '4x^3 + 12x^2 - 36x',
+        wrongs: [['4x^3 + 12x^2 - 36x + 3', 'The constant 3 has derivative 0. Drop it.']],
         hints: ['Use the power rule on each term.'] },
-      { ask: 'f″(x) =', ans: '12x^2 + 12x - 24',
-        wrongs: [['12x^2 + 12x', 'The derivative of `−24x` is `−24`. Keep it.'],
-          ['12x^2 + 6x - 24', 'The derivative of `6x^2` is `12x`. Bring the power down as a factor.']],
-        hints: ['Differentiate `f′(x) = 4x^3 + 6x^2 − 24x` once more.'] },
-      { lead: 'Factor `f″(x)`.', ask: '12x^2 + 12x − 24 = 12(x − 1) ·', ans: 'x + 2',
-        wrongs: [['x - 2', 'Check by multiplying: `(x − 1)(x − 2) = x^2 − 3x + 2`. You need two numbers that multiply to `−2` and add to 1.'],
-          ['12(x - 1)(x + 2)', 'That is all of `f″(x)`. Type only the factor that multiplies `12(x − 1)`.']],
-        hints: ['Factor out 12 first: `12(x^2 + x − 2)`.'] },
-      { lead: 'The candidates for inflection points are where `f″(x) = 0`.', ask: '"candidates:" x =', list: true, num: true, ans: '-2, 1',
-        wrongs: [['2, -1', 'Check the signs: `x − 1 = 0` gives `x = 1`, and `x + 2 = 0` gives `x = −2`.']],
-        hints: ['Set each factor of `12(x − 1)(x + 2)` equal to 0.'] },
-      { lead: 'Test the middle region, `−2 < x < 1`, at `x = 0`.', ask: 'f″(0) =', num: true, ans: '-24',
-        wrongs: [['5', 'That is `f(0)`. Concavity comes from the sign of `f″`, so test in `f″`.'],
+      { ask: 'f″(x) =', ans: '12x^2 + 24x - 36',
+        wrongs: [['12x^2 + 24x', 'The derivative of `−36x` is `−36`. Keep it.'],
+          ['12x^2 + 12x - 36', 'The derivative of `12x^2` is `24x`. Bring the power down as a factor.']],
+        hints: ['Differentiate `f′(x) = 4x^3 + 12x^2 − 36x` once more.'] },
+      { lead: 'Factor `f″(x)`.', ask: '12x^2 + 24x − 36 = 12(x − 1) ·', ans: 'x + 3',
+        wrongs: [['x - 3', 'Check by multiplying: `(x − 1)(x − 3) = x^2 − 4x + 3`. You need two numbers that multiply to `−3` and add to 2.'],
+          ['12(x - 1)(x + 3)', 'That is all of `f″(x)`. Type only the factor that multiplies `12(x − 1)`.']],
+        hints: ['Factor out 12 first: `12(x^2 + 2x − 3)`.'] },
+      { lead: 'The candidates for inflection points are where `f″(x) = 0`.', ask: '"candidates:" x =', list: true, num: true, ans: '-3, 1',
+        wrongs: [['3, -1', 'Check the signs: `x − 1 = 0` gives `x = 1`, and `x + 3 = 0` gives `x = −3`.']],
+        hints: ['Set each factor of `12(x − 1)(x + 3)` equal to 0.'] },
+      { lead: 'Test the middle region, `−3 < x < 1`, at `x = 0`.', ask: 'f″(0) =', num: true, ans: '-36',
+        wrongs: [['3', 'That is `f(0)`. Concavity comes from the sign of `f″`, so test in `f″`.'],
           ['0', 'That is `f′(0)`. Concavity comes from the sign of `f″`, so test in `f″`.']],
-        hints: ['Put `x = 0` into `12x^2 + 12x − 24`.'] },
-      { lead: 'The outer regions give `f″(−3) = 48` and `f″(2) = 48`. Where is the graph concave up?', ok: 0, pick: [
-        ['`x < −2` and `x > 1`', '`f″` is positive on both outer regions and negative in between.'],
-        ['`−2 < x < 1`', '`f″(0) = −24` is negative, so the graph is concave down there.'],
-        ['`x > 1` only', '`f″(−3) = 48` is positive too, so the graph is also concave up on `x < −2`.']] },
+        hints: ['Put `x = 0` into `12x^2 + 24x − 36`.'] },
+      { lead: 'The outer regions give `f″(−4) = 60` and `f″(2) = 60`. Where is the graph concave up?', ok: 0, pick: [
+        ['`x < −3` and `x > 1`', '`f″` is positive on both outer regions and negative in between.'],
+        ['`−3 < x < 1`', '`f″(0) = −36` is negative, so the graph is concave down there.'],
+        ['`x > 1` only', '`f″(−4) = 60` is positive too, so the graph is also concave up on `x < −3`.']] },
       { lead: 'Which candidates are inflection points?', ok: 0, pick: [
-        ['Both `x = −2` and `x = 1`', 'The sign of `f″` changes at each one, and `f` is continuous there.'],
+        ['Both `x = −3` and `x = 1`', 'The sign of `f″` changes at each one, and `f` is continuous there.'],
         ['Neither: `f″ = 0` only gives candidates', 'They start as candidates, and each one passes: the sign of `f″` changes at both.'],
-        ['Only `x = 1`', 'At `x = −2`, `f″` changes from + (at `−3`) to − (at 0), so the concavity changes there too.']] },
-      { lead: 'Find the height of the inflection point at `x = 1`.', ask: 'f(1) =', num: true, ans: '-4',
+        ['Only `x = 1`', 'At `x = −3`, `f″` changes from + (at `−4`) to − (at 0), so the concavity changes there too.']] },
+      { lead: 'Find the height of the inflection point at `x = 1`.', ask: 'f(1) =', num: true, ans: '-10',
         wrongs: [['0', 'That is `f″(1)`, which is 0 at every candidate. The height of the point is `f(1)`.'],
-          ['-14', 'That is `f′(1)`. The height of the point is `f(1)`.']],
-        hints: ['Put `x = 1` into `x^4 + 2x^3 − 12x^2 + 5`.'],
-        why: 'The inflection points are `(−2, −43)` and `(1, −4)`.' }],
-    graph: { x: [-4.5, 3], y: [-90, 40], ticks: { x: 1, y: 20 }, fns: [{ f: f6 }], dots: [{ x: -2, y: -43, label: '(−2, −43)', at: 'w' }, { x: 1, y: -4, label: '(1, −4)', at: 'ne' }],
-      aria: 'The graph of f. It is concave up to the left of x = −2, concave down between −2 and 1, and concave up to the right of 1, with inflection points at (−2, −43) and (1, −4).' },
-    after: 'The graph bends up, then down between the inflection points `(−2, −43)` and `(1, −4)`, then up again.' },
+          ['-20', 'That is `f′(1)`. The height of the point is `f(1)`.']],
+        hints: ['Put `x = 1` into `x^4 + 4x^3 − 18x^2 + 3`.'],
+        why: 'The inflection points are `(−3, −186)` and `(1, −10)`.' }],
+    graph: { x: [-7, 3.5], y: [-350, 100], ticks: { x: 1, y: 100 }, fns: [{ f: f6 }], dots: [{ x: -3, y: -186, label: '(−3, −186)', at: 'e' }, { x: 1, y: -10, label: '(1, −10)', at: 's' }],
+      aria: 'The graph of f. It is concave up to the left of x = −3, concave down between −3 and 1, and concave up to the right of 1, with inflection points at (−3, −186) and (1, −10).' },
+    after: 'The graph bends up, then down between the inflection points `(−3, −186)` and `(1, −10)`, then up again.' },
 
   /* 7. the Second Derivative Test, with an inconclusive case */
   { id: 'p7', sec: 'sec-conc', task: 'Find the critical points of `f` and classify them with the Second Derivative Test where it gives a conclusion.', board: 'f(x) = x^5 − 15x^3', teach: T_SDT,
@@ -3337,14 +3337,14 @@ function sectionHTML(s, n) {
   return sec(s.id, String(n + 1), s.title, s.lede) + col(ps.map(function (p) { return blk(p.id, function () { return problemHTML(p); }); }).join(''));
 }
 function backHTML() {
-  return sec('sec-back', '', 'Back to Paul', '') + prose('', [
-    'If one type of problem gave you trouble, rework Paul’s practice problems for it: [Critical Points](' + PAUL_P + 'CriticalPoints.aspx), [The Shape of a Graph, Part I](' + PAUL_P + 'ShapeofGraphPtI.aspx), [Finding Absolute Extrema](' + PAUL_P + 'AbsExtrema.aspx), [The Shape of a Graph, Part II](' + PAUL_P + 'ShapeofGraphPtII.aspx) or [The Mean Value Theorem](' + PAUL_P + 'MeanValueTheorem.aspx).',
-    'Next, complete Problem Set 7, Parts 1 and 2. Unit 10 continues in Paul’s notes with [Optimization](' + PAUL_C + 'Optimization.aspx).']);
+  return sec('sec-back', '', 'What Comes Next', '') + prose('', [
+    'If one kind of problem gave you trouble, find the example of that kind in Unit 9 Worked Examples, cover its solution, and work it by hand.',
+    'Next, complete the Unit 9 Problem Set.']);
 }
 function page() {
-  return header('Unit 9 Practice', SECTIONS_P.map(function (s) { return ['#' + s.id, s.nav || s.title]; }).concat([['#sec-back', 'Back to Paul']])) +
-    '<main id="top">' + hero({ kicker: 'Calculus I · Unit 9', title: 'Unit 9 Practice: What Derivatives Tell You',
-      dek: 'Use this page after the Unit 9 reading and Paul’s practice problems. For each problem, choose the method, then type each line of the work. Each line is checked before the next one opens. Type a power with ⟦^⟧, as in ⟦x^2⟧ or ⟦x^(2/3)⟧, and put a whole top or bottom in parentheses, as in ⟦(x + 1)/(x − 2)⟧.' }) +
+  return header('Unit 9 Practice', SECTIONS_P.map(function (s) { return ['#' + s.id, s.nav || s.title]; }).concat([['#sec-back', 'Next']])) +
+    '<main id="top">' + hero({ kicker: 'Calculus I · Unit 9: What Derivatives Tell You', title: 'Unit 9 Practice',
+      dek: 'Use this page after you read Unit 9: What Derivatives Tell You and Unit 9 Worked Examples. For each problem, choose the method, then type each line of the work. Each line is checked before the next one opens. Type a power with ⟦^⟧, as in ⟦x^2⟧ or ⟦x^(2/3)⟧, and put a whole top or bottom in parentheses, as in ⟦(x + 1)/(x − 2)⟧.' }) +
     SECTIONS_P.map(sectionHTML).join('') + backHTML() + '</main>';
 }
 expose({ PROBLEMS: PROBLEMS, problemHTML: problemHTML, formProblem: formProblem, powProblem: powProblem, stepDone: stepDone });
@@ -3397,7 +3397,7 @@ selfcheck.add('a finished problem shows every step, Done and its closing figure;
 });
 
 selfcheck.add('every list of critical points is accepted in any order and as decimals', function () {
-  var cases = [['p1-4', '4, -1'], ['p3-4', '2, 0'], ['p4-4', '4,-2'], ['p5-3', '4, 2'], ['p6-5', '1, -2'], ['p7-3', '3, 0, -3'], ['p8-4', '-0.535, 1.869']];
+  var cases = [['p1-4', '4, -1'], ['p3-4', '4, 0'], ['p4-4', '4,-2'], ['p5-3', '4, 2'], ['p6-5', '1, -3'], ['p7-3', '3, 0, -3'], ['p8-4', '-0.535, 1.869']];
   var bad = cases.filter(function (c) { return judge(ITEMS[c[0]], c[1]).st !== 'ok'; }).map(function (c) { return c[0] + ' "' + c[1] + '" -> ' + judge(ITEMS[c[0]], c[1]).st; });
   return bad.length ? { ok: false, detail: bad.join('; ') } : { ok: true, detail: cases.length + ' cases' };
 });
@@ -3440,8 +3440,8 @@ selfcheck.add('a fractional power typed without its parentheses gets the power d
     if (ITEMS[id].num) return;
     powSlips(ITEMS[id].ans).forEach(function (f) { n++; var r = judge(ITEMS[id], f); if (r.st !== 'slip' || r.msg !== POW_MSG) bad.push(id + ' "' + f + '" -> ' + r.st); });
   });
-  [['p3-1', '5/3x^2/3 - 10/3x^-1/3'], ['p3-1', '(5/3)x^2/3-(10/3)x^-1/3']].forEach(function (c) { n++; if (powProblem(ITEMS[c[0]], c[1]) !== POW_MSG) bad.push(c[0] + ' "' + c[1] + '" not caught at Check'); });
-  if (powProblem(ITEMS['p3-1'], '5/3 x^(2/3) - 10/(3x^(1/3))') !== null) bad.push('the key itself is flagged');
+  [['p3-1', '5/3x^2/3 - 20/3x^-1/3'], ['p3-1', '(5/3)x^2/3-(20/3)x^-1/3']].forEach(function (c) { n++; if (powProblem(ITEMS[c[0]], c[1]) !== POW_MSG) bad.push(c[0] + ' "' + c[1] + '" not caught at Check'); });
+  if (powProblem(ITEMS['p3-1'], '5/3 x^(2/3) - 20/(3x^(1/3))') !== null) bad.push('the key itself is flagged');
   if (!n) return { ok: false, detail: 'no fractional-power row' };
   return bad.length ? { ok: false, detail: bad.join('; ') } : { ok: true, detail: n + ' slips' };
 });
