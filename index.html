@@ -887,6 +887,10 @@ p.tb-lab{display:block}
 .prob .pfig{margin-top:22px}
 /* a given figure the steps keep referring to stays pinned under the header while the student works (novice read) */
 .prob .pfig.pin{position:sticky;top:61px;z-index:5;box-shadow:0 6px 10px -6px var(--line)}
+/* label leaders (texts with `to`) in a closing figure: base.css styles .gv-leader only inside .gv, and a static plot()
+   in figure() is not inside .gv, so without this the leader has no stroke (More Practice, 2026-11-10; engine gap reported) */
+.prob .pfig svg .gv-leader{fill:none;stroke:var(--muted);stroke-width:1}
+.prob .pfig svg .gv-leader-dot{fill:var(--muted)}
 
 </style>
 </head>
@@ -2819,6 +2823,14 @@ var T_ABS = paulEx('AbsExtrema', 'Finding Absolute Extrema', 'Examples 1 and 2')
 var T_CONC = paulEx('ShapeofGraphPtII', 'The Shape of a Graph, Part II', 'Example 1');
 var T_SDT = paulEx('ShapeofGraphPtII', 'The Shape of a Graph, Part II', 'Example 2');
 var T_MVT = paulEx('MeanValueTheorem', 'The Mean Value Theorem', 'Example 2');
+/* More Practice links (2026-11-10): Paul class pages; each URL checked to return 200 */
+var T_CRITLN = paulEx('CriticalPoints', 'Critical Points', 'Examples 3 and 6');
+var T_LNCHAIN = paulEx('ChainRule', 'Chain Rule');
+var T_MINMAX = paulEx('MinMaxValues', 'Minimum and Maximum Values', 'Example 1');
+var T_MINMAX3 = paulEx('MinMaxValues', 'Minimum and Maximum Values', 'Examples 1 to 3');
+var T_LIMINF = paulEx('LimitsAtInfinityI', 'Limits at Infinity, Part I', 'Example 5');
+var T_QUOT = paulEx('ProductQuotientRule', 'Product and Quotient Rule');
+var T_MVT1 = paulEx('MeanValueTheorem', 'The Mean Value Theorem');
 
 /* ---------------- form guards (see the problem object above; this page's rows ask for missing factors, so none use them) ---------------- */
 var FORM = {
@@ -2842,7 +2854,8 @@ var SECTIONS_P = [
   { id: 'sec-fdt', nav: 'First Derivative Test', title: 'The First Derivative Test', lede: 'This goes with Paul’s [Critical Points](' + T_CRIT2[0] + '), Example 2, and [The Shape of a Graph, Part I](' + T_SIGN[0] + '), Example 3.' },
   { id: 'sec-abs', nav: 'Absolute Extrema', title: 'Absolute Extrema on a Closed Interval', lede: 'These go with Paul’s [Finding Absolute Extrema](' + T_ABS[0] + '), Examples 1, 2 and 4.' },
   { id: 'sec-conc', nav: 'Concavity', title: 'Concavity and the Second Derivative Test', lede: 'These go with Paul’s [The Shape of a Graph, Part II](' + T_CONC[0] + '), Examples 1 and 2.' },
-  { id: 'sec-mvt', nav: 'Mean Value Theorem', title: 'The Mean Value Theorem', lede: 'This goes with Paul’s [The Mean Value Theorem](' + T_MVT[0] + '), Example 2.' }
+  { id: 'sec-mvt', nav: 'Mean Value Theorem', title: 'The Mean Value Theorem', lede: 'This goes with Paul’s [The Mean Value Theorem](' + T_MVT[0] + '), Example 2.' },
+  { id: 'sec-more', nav: 'More', title: 'More Practice (Only If You Want It)', lede: 'Nothing in this section is required. If a kind of problem above took you more than one try, the problem of the same kind here gives you another go: Problem 9 for where a function increases and decreases, Problem 10 for reading a function from the graph of its derivative, Problem 11 for the First Derivative Test, Problems 12 and 13 for maximum and minimum values, Problems 14 and 15 for concavity, Problem 16 for the Mean Value Theorem, and Problem 17 for all of these on one function. The Unit 9 Problem Set comes next either way.' }
 ];
 
 /* closing-figure functions */
@@ -2856,6 +2869,31 @@ function f6(x) { return Math.pow(x, 4) + 4 * x * x * x - 18 * x * x + 3; }
 function f7(x) { return Math.pow(x, 5) - 15 * x * x * x; }
 function f8(x) { return x * x * x - 2 * x * x + 1; }
 var C8 = (2 + Math.sqrt(13)) / 3;
+/* More Practice figure functions */
+function fM1(x) { return 8 * x + 2 > 0 ? 3 * x - 7 * Math.log(8 * x + 2) : NaN; }
+function gpM2(x) { return -(x + 1) * (x - 1) * (x - 4) / 4; }
+function gM2(x) { return -Math.pow(x, 4) / 16 + x * x * x / 3 + x * x / 8 - x; }
+function gM3(x) { return Math.cbrt(x) * (x - 4); }
+/* Problem 12's given graph: a cubic Hermite curve through five labeled points, flat at the three peaks and valleys and
+   monotone on each piece, so the labeled points are its only extrema ([x, y, slope] at each knot) */
+var KM4 = [[-3, 2, 1.5], [-1, 4, 0], [1, 0, 0], [2.5, 3, 0], [4, -2, -4]];
+function fM4(x) {
+  for (var i = 0; i < KM4.length - 1; i++) {
+    var a = KM4[i], b = KM4[i + 1];
+    if (x >= a[0] && x <= b[0]) {
+      var h = b[0] - a[0], t = (x - a[0]) / h, t2 = t * t, t3 = t2 * t;
+      return (2 * t3 - 3 * t2 + 1) * a[1] + (t3 - 2 * t2 + t) * h * a[2] + (-2 * t3 + 3 * t2) * b[1] + (t3 - t2) * h * b[2];
+    }
+  }
+  return NaN;
+}
+function gM5(x) { return x * x - 4 * x; }
+function gM6(x) { return x * x * x - 9 * x * x - 2 * x + 5; }
+function fppM7(x) { return (x + 2) * (x - 1) * (x - 3) / 3; }
+function fM7(x) { return Math.pow(x, 5) / 60 - Math.pow(x, 4) / 18 - 5 * x * x * x / 18 + x * x; }
+function aM8(t) { return 8 * t + Math.exp(-3 * t); }
+var SLOPE8 = (aM8(3) - aM8(-2)) / 5, CM8 = -Math.log((8 - SLOPE8) / 3) / 3;
+function gM9(x) { return (x + 1) / (x * x); }
 
 /* ---------------- the problems ---------------- */
 var PROBLEMS = [
@@ -3165,7 +3203,383 @@ var PROBLEMS = [
     graph: { x: [-1, 3.3], y: [-2, 12], ticks: { x: 1, y: 4 }, labels: { x: 'x' }, fns: [{ f: f8 }], secant: { f: 0, a: 0, b: 3, role: 'muted' }, tangent: { f: 0, at: C8, role: 'rate', half: 1 },
       dots: [{ x: 0, y: 1, label: '(0, 1)', at: 'n' }, { x: 3, y: 10, label: '(3, 10)', at: 'w' }, { x: C8, y: f8(C8), label: 'c ≈ 1.869', at: 'se' }],
       aria: 'The graph of f on the interval from 0 to 3, with the dashed line through (0, 1) and (3, 10) and a parallel tangent line touching the curve at c ≈ 1.869.' },
-    after: 'At `c ≈ 1.869` the tangent line is parallel to the line through `(0, 1)` and `(3, 10)`: both have slope 3.' }
+    after: 'At `c ≈ 1.869` the tangent line is parallel to the line through `(0, 1)` and `(3, 10)`: both have slope 3.' },
+
+  /* ================= More Practice (optional), added 2026-11-10 by the clarity rebuild =================
+     From the practice twins removed from Unit 9 Worked Examples (plan/clarity-rebuild/twins/unit-09.md: 9.3, 9.4, 9.6,
+     9.9) and the value-add Paul problems (plan/clarity-rebuild/units/unit-09/value-add.md: Critical Points 17, Minimum and
+     Maximum Values 1 to 3, Shape of a Graph II 2, Mean Value Theorem 4). Ids m1 to m9, shown as Problems 9 to 17. Every key
+     and wrong answer: SPEC.md, "More Practice", and tests/check_math.py. */
+
+  /* 9. (value-add, Paul Critical Points 17) critical points of a logarithm: the domain removes a candidate */
+  { id: 'm1', sec: 'sec-more', task: 'Find the critical points of `f`, and find where `f` is increasing and where it is decreasing.', board: 'f(x) = 3x − 7 ln(8x + 2)', teach: T_CRITLN,
+    steps: [
+      { lead: 'A logarithm has a value only where its inside is positive. What is the domain of `f`?', ok: 0, pick: [
+        ['`x > −F{1}{4}`', '`8x + 2 > 0` gives `x > −F{1}{4}`. Only these `x` can be critical points, and only these go on the sign chart.'],
+        ['Every real number', '`ln(8x + 2)` has no value where `8x + 2 ≤ 0`. For example, `f(−1)` would need `ln(−6)`.'],
+        ['`x > 0`', 'The inside `8x + 2` is positive for some negative `x` too: at `x = −0.1` it is 1.2. Solve `8x + 2 > 0`.'],
+        ['`x ≥ −F{1}{4}`', 'At `x = −F{1}{4}` the inside is 0, and `ln 0` has no value. The inequality is strict.']] },
+      { lead: 'Differentiate. Use the chain rule on the logarithm.', ask: 'f′(x) =', ans: '3 - 56/(8x + 2)', teach: T_LNCHAIN,
+        wrongs: [['3 - 7/(8x + 2)', 'Multiply by the derivative of the inside: `Dx ln(8x + 2) = F{8}{8x + 2}`, so the second term is `−F{56}{8x + 2}`.'],
+          ['-56/(8x + 2)', 'The derivative of `3x` is 3. Keep it.'],
+          ['3 + 56/(8x + 2)', 'The logarithm is subtracted, so its derivative is subtracted too.']],
+        hints: ['`Dx ln(u) = F{u′}{u}` with `u = 8x + 2`. Multiply that by `−7`, and add the derivative of `3x`.'] },
+      { lead: 'Write `f′(x)` as one fraction over `8x + 2`. Type its top.', ask: 'f′(x) = F{1}{8x + 2} ·', ans: '24x - 50',
+        wrongs: [['24x - 56', 'Write 3 over the same bottom first: `3 = F{24x + 6}{8x + 2}`. Then subtract 56 from `24x + 6`.'],
+          ['24x + 62', 'The 56 is subtracted: `24x + 6 − 56`.'],
+          ['12x - 25', 'That is the top over `4x + 1`, after dividing the top and bottom by 2. Over `8x + 2` the top is twice that.'],
+          ['(24x - 50)/(8x + 2)', 'That is all of `f′(x)`. Type only its top, the factor that multiplies `F{1}{8x + 2}`.']],
+        hints: ['Write 3 as `F{3(8x + 2)}{8x + 2}`, then combine the two tops.'],
+        why: 'The top shows where `f′` is 0, and the bottom shows where `f′` does not exist.' },
+      { lead: 'Find where the top is 0 and where the bottom is 0. Then list every critical point.', ask: '"critical points:" x =', list: true, num: true, ans: '25/12',
+        wrongs: [['-1/4, 25/12', 'At `x = −F{1}{4}` the bottom is 0, but so is the inside of the logarithm, so `f(−F{1}{4})` does not exist. A critical point must be in the domain.'],
+          ['-1/4', 'That is where the bottom is 0, which is outside the domain, so it is not a critical point. Now solve `24x − 50 = 0`.'],
+          ['-25/12', 'Check the sign: `24x − 50 = 0` gives `x = F{50}{24}`, which is positive.']],
+        hints: ['Solve `24x − 50 = 0`. Then ask whether the zero of the bottom, `x = −F{1}{4}`, is in the domain.'] },
+      { lead: 'The domain starts at `−F{1}{4}`, so the number line splits into two regions: `−F{1}{4} < x < F{25}{12}` and `x > F{25}{12}`. Test `x = 0` in `f′(x) = F{24x − 50}{8x + 2}`.', ask: 'f′(0) =', num: true, ans: '-25',
+        wrongs: [['25', 'The top `−50` is negative and the bottom 2 is positive, so the quotient is negative.'],
+          [['-7ln(2)', '-4.852', '-4.85'], 'That is `f(0)`. Put the test point into the derivative `f′`, not into `f`.']],
+        hints: ['Top: `24 · 0 − 50`. Bottom: `8 · 0 + 2`.'] },
+      { lead: 'Test `x = 5`, from the right-hand region.', ask: 'f′(5) =', num: true, ans: '5/3',
+        wrongs: [['-5/3', 'The top `24 · 5 − 50 = 70` and the bottom `8 · 5 + 2 = 42` are both positive.'],
+          ['70', 'Divide the top by the bottom, `8 · 5 + 2 = 42`.'],
+          [['15 - 7ln(42)', '-11.16', '-11.164'], 'That is `f(5)`. Put the test point into the derivative `f′`, not into `f`.']],
+        hints: ['Top: `24 · 5 − 50`. Bottom: `8 · 5 + 2`.'] },
+      { lead: 'Where is `f` increasing, and where is it decreasing?', ok: 0, pick: [
+        ['Decreasing on `−F{1}{4} < x < F{25}{12}` and increasing on `x > F{25}{12}`', '`f′(0) = −25` is negative and `f′(5) = F{5}{3}` is positive, so `f` has a relative minimum at `x = F{25}{12}`.'],
+        ['Increasing on `−F{1}{4} < x < F{25}{12}` and decreasing on `x > F{25}{12}`', '`f′(0) = −25` is negative, so `f` decreases on the left-hand region.'],
+        ['Decreasing on `x < F{25}{12}` and increasing on `x > F{25}{12}`', '`f` has no value for `x ≤ −F{1}{4}`, so it cannot decrease there. The decreasing region starts at `−F{1}{4}`.']] }],
+    graph: { x: [-0.6, 6], y: [-22, 8], ticks: { x: 1, y: 4 }, fns: [{ f: fM1, domain: [-0.249, 6] }], vlines: [{ x: -0.25, role: 'muted' }],
+      dots: [{ x: 25 / 12, y: fM1(25 / 12), label: '(2.08, −14.24)', at: 's' }],
+      aria: 'The graph of f(x) = 3x minus 7 ln(8x + 2) for x greater than −1/4, with a dashed vertical line at x = −1/4. It comes down from high up near that line, falls to its lowest point at about (2.08, −14.24), then rises slowly.' },
+    after: 'The graph comes down from the dashed line `x = −F{1}{4}`, falls to its lowest point at `x = F{25}{12} ≈ 2.08`, then rises. Nothing is drawn left of `−F{1}{4}`, where `f` has no value.' },
+
+  /* 10. (twin 9.4) reading g from a graph of g′ */
+  { id: 'm2', sec: 'sec-more', task: 'The figure is the graph of the derivative `g′`, not of `g`, for `−2 ≤ x ≤ 5`. Use it to describe `g`.', teach: T_FPRIME, pin: true,
+    fig: { h: 200, x: [-2.4, 5.4], y: [-7, 5.5], ticks: { x: 1, y: 2 }, labels: { x: 'x' }, fns: [{ f: gpM2, role: 'rate', domain: [-2, 5] }], texts: [{ x: 2, y: -4.5, text: 'y = g′(x)', role: 'rate' }],
+      aria: 'The graph of y = g prime of x for x from −2 to 5. It starts above the x-axis at height 4.5, crosses down through the axis at x = −1, dips to about −1 near x = −0.1, crosses up through the axis at x = 1, rises to about 2 near x = 2.8, crosses down through the axis at x = 4, and ends at height −6 at x = 5.' },
+    steps: [
+      { lead: 'Where is `g` increasing?', ok: 0, pick: [
+        ['`−2 < x < −1` and `1 < x < 4`, where the graph of `g′` is above the x-axis', '`g′ > 0` there, so `g` is increasing.'],
+        ['`−1 < x < 1` and `4 < x < 5`, where the graph of `g′` is below the x-axis', 'Below the axis, `g′ < 0`, so `g` is decreasing there.'],
+        ['Where the graph of `g′` rises, from about `x = −0.1` to about `x = 2.8`', 'A rising graph of `g′` means `g′` itself is increasing, which is about the concavity of `g`. `g` increases where `g′` is positive, above the axis.'],
+        ['`1 < x < 4` only', 'At the left of the figure, for `−2 < x < −1`, the graph of `g′` is above the axis too, so `g` increases there as well.']] },
+      { lead: 'Where does `g` have a relative maximum? List every one.', ask: '"relative maxima at" x =', list: true, num: true, ans: '-1, 4',
+        wrongs: [[['-1', '4'], 'Look along the whole graph: the graph of `g′` crosses from above the x-axis to below it twice.'],
+          ['1', 'At `x = 1` the graph of `g′` crosses from below the axis to above it, so `g` changes from decreasing to increasing: that is a relative minimum.'],
+          [['2.8', '3', '-1, 2.8, 4', '-1, 3, 4'], 'Near `x = 2.8` the graph of `g′` has its highest point, but it stays above the axis there, so `g` is still increasing. A relative maximum of `g` is where `g′` crosses from above the axis to below it.'],
+          [['-2, -1, 4', '-1, 4, 5'], 'The ends of the figure, `x = −2` and `x = 5`, are not relative extrema: a relative extremum needs points of the domain on both sides.']],
+        hints: ['Find every place where the graph of `g′` crosses from above the x-axis to below it. Separate the answers with a comma.'] },
+      { lead: 'Where does `g` have a relative minimum?', ask: '"relative minimum at" x =', num: true, ans: '1',
+        wrongs: [[['-1', '4'], 'There the graph of `g′` crosses from above the axis to below it, so `g` changes from increasing to decreasing: a relative maximum.'],
+          [['0', '-0.1', '-0.12'], 'Near `x = −0.1` the graph of `g′` has its lowest point between `−1` and 1, but it stays below the axis there, so `g` is still decreasing. Look for where the graph of `g′` crosses from below the axis to above it.'],
+          ['5', 'At `x = 5` the graph of `g′` is at its lowest, so `g` is falling fastest there, but 5 is the end of the figure. A relative minimum is where `g′` crosses from below the axis to above it.']],
+        hints: ['Find where the graph of `g′` crosses from below the x-axis to above it.'] },
+      { lead: 'The graph of `g′` has its highest point between 1 and 4 near `x = 2.8`, where `g′ ≈ 2`. What happens to `g` there?', ok: 0, pick: [
+        ['`g` is still increasing, and it rises fastest there', '`g′` is positive on both sides of 2.8, and it is largest at 2.8, so the graph of `g` is steepest there.'],
+        ['`g` has a relative maximum there', 'A high point of `g′` is not an extremum of `g`. `g′` is positive on both sides of 2.8, so `g` keeps increasing until `x = 4`.'],
+        ['`g` levels off there, because the graph of `g′` is flat', 'Where the graph of `g′` is flat, `g′` stops changing, but it is about 2, not 0. So `g` is rising with slope about 2.']] }],
+    graph: { x: [-2.4, 5.4], y: [-2, 5], ticks: { x: 1, y: 1 }, fns: [{ f: gM2, domain: [-2, 5] }],
+      dots: [{ x: -1, y: gM2(-1), label: 'max', at: 'n' }, { x: 1, y: gM2(1), label: 'min', at: 's' }, { x: 4, y: gM2(4), label: 'max', at: 'n' }],
+      aria: 'A graph of one function g with this derivative, for x from −2 to 5. It rises to a relative maximum at x = −1, falls to a relative minimum at x = 1, rises to a higher relative maximum at x = 4, then falls.' },
+    after: 'One function with this derivative: `g` rises to a relative maximum at `x = −1`, falls to a relative minimum at `x = 1`, rises to a relative maximum at `x = 4`, then falls. It climbs most steeply near `x = 2.8`, where `g′` is largest.' },
+
+  /* 11. (twin 9.3) a critical point where g′ does not exist and the sign does not change */
+  { id: 'm3', sec: 'sec-more', task: 'Find the critical points of `g`, and classify each one with the First Derivative Test.', board: 'g(x) = x^(4/3) − 4x^(1/3)', teach: T_CRIT2,
+    steps: [
+      { lead: 'Differentiate with the power rule.', ask: 'g′(x) =', ans: '4/3 x^(1/3) - 4/(3x^(2/3))',
+        wrongs: [['(4/3)x^(1/3) - (4/3)x^(-4/3)', 'Subtract 1 from each exponent: `F{1}{3} − 1 = −F{2}{3}`.'],
+          ['(4/3)x^(1/3) - 4x^(-2/3)', 'Multiply by the exponent too: `4 · F{1}{3} = F{4}{3}`.']],
+        hints: ['`Dx (x^n) = n x^(n − 1)` works for fractional `n`: the exponents become `F{4}{3} − 1` and `F{1}{3} − 1`.'] },
+      { lead: 'Write `g′(x)` as one fraction over `3x^(2/3)`. Type its top.', ask: 'g′(x) = F{1}{3x^(2/3)} ·', ans: '4x - 4',
+        wrongs: [['4x^(1/3) - 4', 'Multiply the first term by `F{x^(2/3)}{x^(2/3)}`. On top, `x^(1/3) · x^(2/3) = x`, so the first term becomes `4x`.'],
+          ['4x + 4', 'The second term is subtracted, so the top is `4x − 4`.'],
+          ['(4x - 4)/(3x^(2/3))', 'That is all of `g′(x)`. Type only its top, the factor that multiplies `F{1}{3x^(2/3)}`.']],
+        hints: ['Multiply `F{4}{3}x^(1/3)` by `F{x^(2/3)}{x^(2/3)}` so that both terms have the bottom `3x^(2/3)`.'],
+        why: 'So `g′(x) = F{4(x − 1)}{3x^(2/3)}`.' },
+      { lead: 'The bottom, `3x^(2/3)`, is 0 at `x = 0`. Is `x = 0` a critical point?', ok: 0, pick: [
+        ['Yes: `g(0) = 0` exists and `g′(0)` does not exist', 'A critical point needs `g(c)` to exist and either `g′(c) = 0` or `g′(c)` not to exist.'],
+        ['No, because `g′(0)` is not 0', '`g′(c) = 0` is one way to be a critical point. The other is that `g′(c)` does not exist while `g(c)` does.'],
+        ['No, because 0 is not in the domain of `g`', '`g(0) = 0 − 0 = 0`, so 0 is in the domain. Only `g′` fails to exist there.']] },
+      { lead: 'List every critical point.', ask: '"critical points:" x =', list: true, num: true, ans: '0, 1',
+        wrongs: [['1', 'That is where the top is 0. Include `x = 0`, where `g′` does not exist but `g` does.'],
+          [['0, 1, 4', '0, 4', '4'], '`g(x) = x^(1/3)(x − 4)` is 0 at `x = 4`, where the graph crosses the x-axis. Critical points come from `g′`: its top `4x − 4` is 0 at `x = 1`.']],
+        hints: ['Solve `4x − 4 = 0` for the first one. Add the point where the bottom `3x^(2/3)` is 0.'] },
+      { lead: 'Look at the bottom, `3x^(2/3) = 3(x^(1/3))^2`. What is its sign for `x ≠ 0`?', ok: 0, pick: [
+        ['Positive, because it is 3 times a square', 'So `g′` has the same sign as its top, `4x − 4`.'],
+        ['Negative for `x < 0`, because `x^(1/3)` is negative there', '`x^(1/3)` is negative for `x < 0`, but its square is positive: `(−1)^(2/3) = ((−1)^(1/3))^2 = 1`.'],
+        ['It changes sign at `x = 0`', 'A square never changes sign. `3(x^(1/3))^2` is positive on both sides of 0.']] },
+      { lead: 'Test `x = −1`, using `(−1)^(2/3) = 1`.', ask: 'g′(−1) =', num: true, ans: '-8/3',
+        wrongs: [['8/3', 'The top `4(−1) − 4 = −8` is negative and the bottom `3 · 1` is positive, so the quotient is negative.'],
+          ['-8', 'Divide by the bottom as well: `3(−1)^(2/3) = 3`.'],
+          ['5', 'That is `g(−1)`. Put the test point into the derivative `g′`, not into `g`.']],
+        hints: ['Top: `4(−1) − 4`. Bottom: `3 · 1`.'] },
+      { lead: 'On `0 < x < 1` the top `4x − 4` is negative too, so `g′ < 0` there. Test `x = 8`, using `8^(2/3) = 4`.', ask: 'g′(8) =', num: true, ans: '7/3',
+        wrongs: [['7', 'Keep the 3 in the bottom: `3 · 8^(2/3) = 3 · 4 = 12`.'],
+          ['28/3', 'The bottom is `3 · 8^(2/3) = 3 · 4 = 12`, not 3.'],
+          ['8', 'That is `g(8)`. Put the test point into the derivative `g′`, not into `g`.']],
+        hints: ['Top: `4 · 8 − 4`. Bottom: `3 · 4`.'] },
+      { lead: 'Classify the critical points with the First Derivative Test.', ok: 0, pick: [
+        ['A relative minimum at `x = 1`; `x = 0` is neither, because `g′` does not change sign there', '`g′` is negative on both sides of 0, and it changes from − to + at 1.'],
+        ['A relative maximum at `x = 0` and a relative minimum at `x = 1`', '`g′` is negative on both sides of 0 (at `−1` and on `0 < x < 1`), so `g` keeps decreasing through 0. Problem 3 is different: there `f′` changed from + to − at 0.', ['#ex-p3', 'See Problem 3']],
+        ['A relative minimum at both `x = 0` and `x = 1`', 'At 0, `g′` is negative on both sides, so `g` keeps decreasing through 0.', T_FDT],
+        ['A relative minimum at `x = 1`; `x = 0` is neither, because `g′(0)` does not exist', 'Neither is right, but not for that reason. A point where `g′` does not exist can be an extremum, as `x = 0` is in Problem 3. Here 0 is neither because `g′` keeps its sign.', ['#ex-p3', 'See Problem 3']]] },
+      { lead: 'Find the relative minimum value.', ask: 'g(1) =', num: true, ans: '-3',
+        wrongs: [['0', 'That is `g′(1)`, which is 0 at this critical point. The value is `g(1) = 1^(4/3) − 4 · 1^(1/3)`.'],
+          ['5', 'The second term is subtracted: `g(1) = 1 − 4`.']],
+        hints: ['`1^(4/3) = 1` and `1^(1/3) = 1`.'] }],
+    graph: { x: [-2.5, 6], y: [-6, 9], ticks: { x: 1, y: 2 }, fns: [{ f: gM3 }], dots: [{ x: 0, y: 0, label: '(0, 0)', at: 'e' }, { x: 1, y: -3, label: '(1, −3)', at: 's' }],
+      aria: 'The graph of x to the four-thirds minus 4 times x to the one-third. It falls from the upper left through the origin, where it has a vertical tangent line, keeps falling to a low point at (1, −3), then rises.' },
+    after: 'At `x = 0` the graph has a vertical tangent line but keeps falling, so 0 is a critical point that is neither. The relative minimum is `g(1) = −3`.' },
+
+  /* 12. (value-add, Paul Minimum and Maximum Values 1 and 2) relative and absolute extrema read from a graph of f */
+  { id: 'm4', sec: 'sec-more', task: 'The figure is the graph of `f` on the closed interval `[−3, 4]`. Use it to find the relative and absolute extrema of `f`.', teach: T_MINMAX, pin: true,
+    fig: { h: 210, x: [-3.7, 4.7], y: [-3, 5.4], ticks: { x: 1, y: 1 }, labels: { x: 'x' }, fns: [{ f: fM4, domain: [-3, 4] }],
+      dots: [{ x: -3, y: 2, label: '(−3, 2)', at: 'se' }, { x: -1, y: 4, label: '(−1, 4)', at: 'n' }, { x: 1, y: 0, label: '(1, 0)', at: 's' }, { x: 2.5, y: 3, label: '(2.5, 3)', at: 'n' }, { x: 4, y: -2, label: '(4, −2)', at: 'w' }],
+      aria: 'The graph of f on the interval from −3 to 4. It starts at the endpoint (−3, 2), rises to a peak at (−1, 4), falls to a valley at (1, 0), rises to a lower peak at (2.5, 3), then falls to the endpoint (4, −2).' },
+    steps: [
+      { lead: 'Where does `f` have a relative maximum? List every one.', ask: '"relative maxima at" x =', list: true, num: true, ans: '-1, 2.5',
+        wrongs: [['-1', '`x = 2.5` is a relative maximum too: the graph rises to it and falls after it. A relative maximum only has to be higher than the points near it.'],
+          [['-3, -1, 2.5'], '`x = −3` is an endpoint. An endpoint is never a relative extremum, because a relative extremum needs points of the domain on both sides.'],
+          [['4, 3', '3, 4'], 'Those are the heights `f(−1) = 4` and `f(2.5) = 3`. Type where the relative maxima are: their `x`-values.']],
+        hints: ['A relative maximum is a peak: higher than every point near it on both sides. Leave out the ends of the interval.'] },
+      { lead: 'Where does `f` have a relative minimum?', ask: '"relative minima at" x =', list: true, num: true, ans: '1',
+        wrongs: [[['1, 4', '4', '-3, 1', '-3, 1, 4'], 'An endpoint is never a relative extremum, because a relative extremum needs points of the domain on both sides. Leave out `x = −3` and `x = 4`.'],
+          ['0', 'That is the height `f(1) = 0`. Type where the relative minimum is: its `x`-value.']],
+        hints: ['A relative minimum is a valley: lower than every point near it on both sides.'] },
+      { lead: 'Now the absolute extrema. What is the largest value of `f` on `[−3, 4]`?', ask: '"absolute maximum value:"', num: true, ans: '4',
+        wrongs: [['3', '`f(2.5) = 3` is a relative maximum, but `f(−1) = 4` is higher. The absolute maximum is the largest value on the whole interval.'],
+          ['2', '`f(−3) = 2` is the value at the left end, but the graph goes higher.'],
+          ['-1', '`x = −1` is where the absolute maximum is. Its value is the height there.']],
+        hints: ['Find the highest point on the whole graph, ends included, and read its height.'] },
+      { lead: 'What is the smallest value of `f` on `[−3, 4]`?', ask: '"absolute minimum value:"', num: true, ans: '-2',
+        wrongs: [['0', '`f(1) = 0` is the relative minimum, but the endpoint value `f(4) = −2` is lower. An endpoint can be an absolute extremum.'],
+          ['4', '`x = 4` is where the absolute minimum is. Its value is the height there.']],
+        hints: ['Find the lowest point on the whole graph, ends included, and read its height.'] },
+      { lead: 'What kind of point is `(4, −2)`?', ok: 0, pick: [
+        ['An absolute minimum, but not a relative minimum', 'It is the lowest point on `[−3, 4]`, but it has no points of the domain to its right.'],
+        ['Both an absolute and a relative minimum', 'This course follows Paul: an endpoint is never a relative extremum, because a relative extremum needs points of the domain on both sides.'],
+        ['Neither, because an endpoint cannot be an extremum', 'An endpoint cannot be a relative extremum, but it can be an absolute one, as `x = 2` is in Paul’s Example 1.']] },
+      { lead: 'Which point is both a relative extremum and an absolute extremum?', ok: 0, pick: [
+        ['`(−1, 4)`: a relative maximum and the absolute maximum', 'It is a peak, and no point on `[−3, 4]` is higher.'],
+        ['`(2.5, 3)`', 'It is a relative maximum, but `(−1, 4)` is higher, so it is not the absolute maximum.'],
+        ['`(1, 0)`', 'It is a relative minimum, but the endpoint `(4, −2)` is lower, so it is not the absolute minimum.'],
+        ['None: a point cannot be both', 'A relative extremum can also be absolute. Check the peaks against the highest point of the whole graph.']] }] },
+
+  /* 13. (value-add, after Paul Minimum and Maximum Values 3) one function on closed, open and half-open intervals */
+  { id: 'm5', sec: 'sec-more', task: 'Find the absolute extrema of `g` on each interval below, or say that there is none. The figure is the graph of `g`.', board: 'g(x) = x^2 − 4x', teach: T_MINMAX3, pin: true,
+    fig: { h: 200, x: [-1.7, 6.7], y: [-7.5, 13], ticks: { x: 1, y: 4 }, labels: { x: 'x' }, fns: [{ f: gM5 }], dots: [{ x: 2, y: -4, label: '(2, −4)', at: 's' }],
+      aria: 'The graph of g(x) = x squared minus 4x, a parabola opening up with its lowest point at (2, −4). It crosses the x-axis at 0 and 4.' },
+    steps: [
+      { lead: '`g′(x) = 2x − 4`. Find the critical point.', ask: '"critical point:" x =', num: true, ans: '2',
+        wrongs: [[['0, 4', '0', '4'], 'Those are where `g(x) = 0`, where the graph crosses the x-axis. A critical point is where `g′(x) = 2x − 4 = 0`.'],
+          ['-4', 'That is the value `g(2) = −4`. Type where the critical point is: its `x`-value.'],
+          ['-2', 'Check the sign: `2x − 4 = 0` gives `x = 2`.']],
+        hints: ['Solve `2x − 4 = 0`.'] },
+      { lead: 'Start with `[−1, 4]`, a closed interval. Its candidates are the endpoints and the critical point 2, with `g(2) = −4`. Find the value at the left end.', ask: 'g(−1) =', num: true, ans: '5',
+        wrongs: [['-3', '`−4(−1) = +4`, so `g(−1) = 1 + 4`.'],
+          ['-5', 'Square first: `(−1)^2 = 1`, then add `−4(−1) = 4`.']],
+        hints: ['`(−1)^2 = 1` and `−4(−1) = 4`.'] },
+      { ask: 'g(4) =', num: true, ans: '0',
+        wrongs: [['32', '`−4 · 4 = −16`, so `g(4) = 16 − 16`.']],
+        hints: ['`4^2 = 16` and `−4 · 4 = −16`.'] },
+      { lead: 'What are the absolute extrema of `g` on `[−1, 4]`?', ok: 0, pick: [
+        ['Maximum 5 at `x = −1`; minimum `−4` at `x = 2`', '5 is the largest of 5, `−4` and 0, and `−4` is the smallest. On a closed interval both always exist.'],
+        ['Maximum 0 at `x = 4`; minimum `−4` at `x = 2`', '`g(−1) = 5` is larger than `g(4) = 0`. Compare both endpoints.'],
+        ['Minimum `−4` at `x = 2`; no absolute maximum', '`[−1, 4]` is closed, and `g` is continuous, so both extrema exist. The largest value is `g(−1) = 5`.']] },
+      { lead: 'Now `(−1, 4]`: the same interval with `x = −1` left out.', ok: 0, pick: [
+        ['Minimum `−4` at `x = 2`; no absolute maximum', 'Near `−1` the values of `g` come as close to 5 as you like, but `x = −1` is left out, so no point is the highest.'],
+        ['Maximum 5 at `x = −1`; minimum `−4` at `x = 2`', '`x = −1` is not in `(−1, 4]`, so `g(−1) = 5` does not count. No value of `g` on this interval reaches 5.'],
+        ['Maximum 0 at `x = 4`; minimum `−4` at `x = 2`', 'Points near `−1` are higher than `g(4) = 0`: for example, `g(−0.5) = 2.25`.']] },
+      { lead: 'Now `[3, 6)`. The critical point 2 is not in it.', ask: 'g(3) =', num: true, ans: '-3',
+        wrongs: [['21', '`−4 · 3 = −12`, so `g(3) = 9 − 12`.'],
+          ['-4', 'That is `g(2)`, and 2 is not in `[3, 6)`. Put 3 into `g`.']],
+        hints: ['`3^2 = 9` and `−4 · 3 = −12`.'] },
+      { lead: 'What are the absolute extrema of `g` on `[3, 6)`?', ok: 0, pick: [
+        ['Minimum `−3` at `x = 3`; no absolute maximum', '`g` increases on all of `[3, 6)`. Its values come as close to `g(6) = 12` as you like, but 6 is left out.'],
+        ['Minimum `−3` at `x = 3`; maximum 12 at `x = 6`', 'The round bracket in `[3, 6)` leaves 6 out, so `g(6) = 12` is not a value of `g` here.'],
+        ['Minimum `−4` at `x = 2`; no absolute maximum', '2 is not in `[3, 6)`. On this interval the lowest value is at the left end, `g(3) = −3`.'],
+        ['None, because the interval is not closed', 'A closed interval guarantees both extrema, but other intervals can still have one. Here the closed end 3 gives the minimum.']] },
+      { lead: 'Last, `(2, 5)`.', ok: 0, pick: [
+        ['No absolute maximum and no absolute minimum', 'The values come as close to `−4` and to 5 as you like, but both ends are left out, so no point is the lowest or the highest.'],
+        ['Minimum `−4` at `x = 2`; no absolute maximum', '2 is not in `(2, 5)`, so `g(2) = −4` does not count, and every other value is above `−4`.'],
+        ['Minimum `−4` at `x = 2` and maximum 5 at `x = 5`', 'Neither end is in `(2, 5)`, so neither value counts.'],
+        ['Maximum 5 at `x = 5`; no absolute minimum', '5 is not in `(2, 5)`, so `g(5) = 5` does not count.']] }] },
+
+  /* 14. (twin 9.6) choosing a constant for an inflection point */
+  { id: 'm6', sec: 'sec-more', task: 'Find the value of `k` so that `g` has an inflection point at `x = 3`.', board: 'g(x) = x^3 + kx^2 − 2x + 5', teach: T_CONC,
+    steps: [
+      { lead: 'What must be true at `x = 3`?', ok: 0, pick: [
+        ['`g″(3) = 0`, and the sign of `g″` changes at 3', 'A polynomial’s `g″` exists everywhere, so the concavity can change only where `g″ = 0`.'],
+        ['`g′(3) = 0`', 'That would make 3 a critical point, where the graph may turn. An inflection point is about concavity, which comes from `g″`.'],
+        ['`g(3) = 0`', 'That says the graph crosses the x-axis at 3. Concavity comes from `g″`.']] },
+      { lead: '`k` is a constant, so treat it like a number. `g′(x) = 3x^2 + 2kx − 2`. What is `g″(x)`?', ok: 0, pick: [
+        ['`6x + 2k`', 'The derivative of `2kx` is `2k`, as the derivative of `5x` would be 5.'],
+        ['`6x + 2kx`', '`2kx` is a constant times `x`, so its derivative is `2k`.'],
+        ['`6x`', 'Only a constant term has derivative 0. `2kx` has an `x` in it, so its derivative is `2k`.'],
+        ['`6x + 2k − 2`', '`−2` is a constant, so its derivative is 0.']] },
+      { lead: 'Put `x = 3` into `g″(x) = 6x + 2k`.', ask: 'g″(3) =', v: 'k', ans: '18 + 2k',
+        wrongs: [['6 + 2k', 'Put 3 in for `x`: `6 · 3 = 18`.'],
+          ['18 + 6k', '`2k` has no `x` in it, so it stays `2k` when `x = 3`.']],
+        hints: ['Replace `x` with 3. `k` stays a letter.'] },
+      { lead: 'Set `g″(3) = 0` and solve for `k`.', ask: 'k =', num: true, ans: '-9',
+        wrongs: [['9', '`18 + 2k = 0` gives `2k = −18`, so `k` is negative.'],
+          ['-18', 'Divide both sides of `2k = −18` by 2.'],
+          [['-25/6', '-4.17', '-4.167'], 'That solves `g′(3) = 27 + 6k − 2 = 0`, which makes 3 a critical point. Solve `g″(3) = 18 + 2k = 0` instead.']],
+        hints: ['Subtract 18 from both sides of `18 + 2k = 0`, then divide by 2.'] },
+      { lead: 'With `k = −9`, `g″(x) = 6x − 18`. Check that the concavity really changes at 3. Test `x = 2`.', ask: 'g″(2) =', num: true, ans: '-6',
+        wrongs: [['6', '`6 · 2 − 18 = 12 − 18`, which is negative.'],
+          ['-26', 'That is `g′(2) = 12 − 36 − 2`. Concavity comes from `g″`.']],
+        hints: ['Put `x = 2` into `6x − 18`.'] },
+      { lead: 'Testing `x = 4` gives `g″(4) = 24 − 18 = 6`. Is `x = 3` an inflection point?', ok: 0, pick: [
+        ['Yes: `g″` changes from − to + at 3, so the graph changes from concave down to concave up', 'That change of sign is what makes `(3, g(3))` an inflection point.'],
+        ['Yes, because `g″(3) = 0`, so no test is needed', '`g″(c) = 0` only makes `c` a candidate: `x^4` has a second derivative of 0 at 0 and no inflection point there. The change of sign is what decides it.'],
+        ['No, because `g″(2)` and `g″(4)` have different signs', 'A change of sign in `g″` is exactly what an inflection point needs.']] },
+      { lead: 'Find the height of the inflection point.', ask: 'g(3) =', num: true, ans: '-55',
+        wrongs: [['0', 'That is `g″(3)`, which is 0 at every candidate. The height of the point is `g(3)`.'],
+          ['-29', 'That is `g′(3) = 27 − 54 − 2`. The height of the point is `g(3)`.'],
+          ['107', 'Use `k = −9`: the term is `−9 · 3^2 = −81`, not `+81`.']],
+        hints: ['Put `x = 3` into `x^3 − 9x^2 − 2x + 5`.'],
+        why: 'The inflection point is `(3, −55)`.' }],
+    graph: { x: [-2, 8.5], y: [-130, 30], ticks: { x: 1, y: 40 }, fns: [{ f: gM6 }], dots: [{ x: 3, y: -55, label: '(3, −55)', at: 'e' }],
+      aria: 'The graph of x cubed minus 9x squared minus 2x plus 5. It rises to a high point near x = −0.1, falls through the inflection point (3, −55) to a low point near x = 6.1, then rises.' },
+    after: 'With `k = −9`, the graph is concave down to the left of `(3, −55)` and concave up to the right of it.' },
+
+  /* 15. (value-add, Paul Shape of a Graph II 2) concavity read from a graph of f″ */
+  { id: 'm7', sec: 'sec-more', task: 'The figure is the graph of the second derivative `f″`, not of `f`. Use it to describe the concavity of `f`.', teach: T_CONC, pin: true,
+    fig: { h: 200, x: [-3.4, 4.6], y: [-9, 8.5], ticks: { x: 1, y: 4 }, labels: { x: 'x' }, fns: [{ f: fppM7, role: 'rate', domain: [-3, 4.2] }], texts: [{ x: 3.4, y: 6, text: 'y = f″(x)', role: 'rate' }],
+      aria: 'The graph of y = f double prime of x for x from −3 to 4.2. It starts below the x-axis at height −8, crosses up through the axis at x = −2, rises to about 2.7 near x = −0.8, crosses down through the axis at x = 1, dips to about −1.4 near x = 2.1, crosses up through the axis at x = 3, and ends near height 8.' },
+    steps: [
+      { lead: 'Where is the graph of `f` concave up?', ok: 0, pick: [
+        ['`−2 < x < 1` and `x > 3`, where the graph of `f″` is above the x-axis', '`f″ > 0` there, so the graph of `f` is concave up.'],
+        ['`x < −2` and `1 < x < 3`, where the graph of `f″` is below the x-axis', 'Below the axis, `f″ < 0`, so the graph of `f` is concave down there.'],
+        ['Where the graph of `f″` rises', 'Whether `f″` rises or falls does not decide concavity. Its sign does: concave up where `f″ > 0`, above the axis.'],
+        ['`−2 < x < 1` only', 'At the right of the figure, for `x > 3`, the graph of `f″` is above the axis too.']] },
+      { lead: 'Where does `f` have an inflection point? List every one.', ask: '"inflection points at" x =', list: true, num: true, ans: '-2, 1, 3',
+        wrongs: [[['-0.8, 2.1', '-0.79, 2.12', '-0.8', '2.1', '-1, 2'], 'Near `x = −0.8` and `x = 2.1` the graph of `f″` has a high point and a low point, but `f″` keeps its sign there, so the concavity does not change. Look for where the graph of `f″` crosses the x-axis.'],
+          [['-2, 3', '-2, 1', '1, 3'], '`f″` changes sign at each place where its graph crosses the x-axis, and it crosses three times.']],
+        hints: ['An inflection point is where `f″` changes sign: where the graph of `f″` crosses the x-axis.'] },
+      { lead: '`f″(2)` is negative. What does that tell you about `f` at `x = 2`?', ok: 0, pick: [
+        ['The graph of `f` is concave down at `x = 2`', 'That is all the sign of `f″` says.'],
+        ['`f` is decreasing at `x = 2`', 'Increasing and decreasing come from the sign of `f′`, and this figure does not show `f′`.'],
+        ['`f` has a relative maximum at `x = 2`', 'The Second Derivative Test needs a critical point first, with `f′(2) = 0`. This figure does not show `f′`, so `f″(2) < 0` alone says only concave down.']] }],
+    graph: { x: [-3.4, 4.6], y: [-2, 9], ticks: { x: 1, y: 2 }, fns: [{ f: fM7, domain: [-3, 4.2] }],
+      dots: [{ x: -2, y: fM7(-2) }, { x: 1, y: fM7(1) }, { x: 3, y: fM7(3) }],
+      aria: 'A graph of one function f with this second derivative, with dots at its inflection points x = −2, 1 and 3. It is concave down left of −2, concave up between −2 and 1, concave down between 1 and 3, and concave up right of 3.' },
+    after: 'This is one function with this second derivative. Its graph bends down, then up, then down, then up, and the dots mark the three inflection points where the bending changes.' },
+
+  /* 16. (value-add, Paul Mean Value Theorem 4) the Mean Value Theorem for a non-polynomial, solved with a logarithm */
+  { id: 'm8', sec: 'sec-more', v: 'c', task: 'Find every number `c` that satisfies the conclusion of the Mean Value Theorem for `A` on `[−2, 3]`. Use a calculator for powers of `e` and logarithms.', board: 'A(t) = 8t + e^(−3t)', teach: T_MVT1,
+    steps: [
+      { lead: 'Do the conditions of the Mean Value Theorem hold?', ok: 0, pick: [
+        ['Yes: `8t` and `e^(−3t)` are continuous and differentiable for every `t`', 'So `A` is continuous on `[−2, 3]` and differentiable on `(−2, 3)`.'],
+        ['No, because `A(−2)` and `A(3)` are not equal', '`A(a) = A(b)` is the extra condition of Rolle’s Theorem. The Mean Value Theorem does not need it.'],
+        ['No, because `A` is not a polynomial', 'The theorem needs continuity and differentiability, not a polynomial. Exponentials have both everywhere.']] },
+      { lead: 'Find `A(−2)`. Exact values or decimals are fine.', ask: 'A(−2) =', num: true, ans: '-16 + e^6',
+        wrongs: [[['-16 + e^(-6)', '-15.998'], '`−3 · (−2) = 6`, so the power is `e^6`, not `e^(−6)`.'],
+          ['-16', 'That is only the first term, `8(−2)`. Add the second term, `e^(−3(−2)) = e^6`.'],
+          [['16 + e^6', '419.43', '419.4'], '`8 · (−2) = −16`. Keep the minus sign.']],
+        hints: ['Put `t = −2` into both terms: `8(−2)` and `e^(−3(−2))`.'] },
+      { ask: 'A(3) =', num: true, ans: '24 + e^(-9)', also: ['24'],
+        wrongs: [[['24 + e^9', '8127.08', '8127.1'], '`−3 · 3 = −9`, so the power is `e^(−9)`.']],
+        hints: ['Put `t = 3` into both terms.'],
+        why: '`e^(−9) ≈ 0.0001` is tiny, so `A(3) ≈ 24`.' },
+      { lead: 'Find the slope of the line through the endpoints.', ask: 'F{A(3) − A(−2)}{3 − (−2)} =', num: true, ans: '(24 + e^(-9) - (-16 + e^6))/5',
+        wrongs: [[['24 + e^(-9) - (-16 + e^6)', '-363.43', '-363.4'], 'Divide by the length of the interval, `3 − (−2) = 5`.'],
+          [['72.69', '72.686', '72.7'], 'Subtract in the same order on top and bottom. `A(3)` is smaller than `A(−2)`, so the slope is negative.']],
+        hints: ['Compute `F{24 − 387.43}{5}`.'] },
+      { lead: 'Write `A′(c)`.', ask: 'A′(c) =', ans: '8 - 3e^(-3c)',
+        wrongs: [[['8 + e^(-3c)', '8 - e^(-3c)'], 'Multiply by the derivative of the inside: `−3t` has derivative `−3`, so the term is `−3e^(−3c)`.'],
+          ['8 + 3e^(-3c)', 'The inside `−3t` has derivative `−3`, so the term is `−3e^(−3c)`. Keep the minus sign.']],
+        hints: ['`Dt e^(−3t) = −3e^(−3t)`, by the chain rule. Then write `c` in place of `t`.'] },
+      { lead: 'Set `8 − 3e^(−3c)` equal to the slope, about `−72.686`, and solve for `e^(−3c)`.', ask: 'e^(−3c) =', num: true, tol: 0.05, ans: '(8 - (24 + e^(-9) - (-16 + e^6))/5)/3',
+        wrongs: [[['-21.562', '-21.56'], 'Move the 8 with care: `−3e^(−3c) = −72.686 − 8 = −80.686`.'],
+          [['-26.895', '-26.9'], 'A power of `e` is always positive. Dividing `−80.686` by `−3` gives a positive number.'],
+          [['80.686', '80.69', '80.7'], 'That is `3e^(−3c)`. Divide by 3 as well.']],
+        hints: ['Subtract 8 from both sides: `−3e^(−3c) = −72.686 − 8`. Then divide by `−3`.'] },
+      { lead: 'Take the natural log of both sides, then solve for `c`.', ask: 'c =', num: true, tol: 0.002, ans: '-ln((8 - (24 + e^(-9) - (-16 + e^6))/5)/3)/3',
+        wrongs: [[['1.0973', '1.097'], '`ln(26.895) ≈ 3.292` equals `−3c`, so divide by `−3`, which makes `c` negative.'],
+          [['3.2919', '3.292'], 'That is `−3c = ln(26.895)`. Divide by `−3` to get `c`.']],
+        hints: ['`ln(e^(−3c)) = −3c`, so `−3c = ln(26.895)`.'] },
+      { lead: 'Is this `c` one the theorem guarantees?', ok: 0, pick: [
+        ['Yes: `−2 < −1.097 < 3`', 'It lies in `(−2, 3)`, and it is the only solution, so it is the one number `c`.'],
+        ['No, because `c` has to be positive', '`c` can be any number strictly between `a = −2` and `b = 3`.'],
+        ['No, because the theorem needs two values of `c`', 'The theorem guarantees at least one `c`. Here the equation has exactly one solution, and it is inside `(−2, 3)`.']] }],
+    graph: { x: [-2.3, 3.3], y: [-120, 420], ticks: { x: 1, y: 100 }, labels: { x: 't' }, fns: [{ f: aM8, domain: [-2, 3] }], secant: { f: 0, a: -2, b: 3, role: 'muted' }, tangent: { f: 0, at: CM8, role: 'rate', half: 0.7 },
+      dots: [{ x: -2, y: aM8(-2), label: '(−2, 387.43)', at: 'e' }, { x: 3, y: aM8(3), label: '(3, 24)', at: 's' }, { x: CM8, y: aM8(CM8) }], texts: [{ x: 0.15, y: 55, text: 'c ≈ −1.097', to: [CM8, aM8(CM8)] }],
+      aria: 'The graph of A on the interval from −2 to 3, with the dashed line through (−2, 387.43) and (3, 24) and a parallel tangent line touching the curve at c ≈ −1.097.' },
+    after: 'At `c ≈ −1.097` the tangent line is parallel to the line through the endpoints: both have slope about `−72.69`.' },
+
+  /* 17. (twin 9.9) all five questions on one function */
+  { id: 'm9', sec: 'sec-more', task: 'Find (a) the domain and any vertical asymptote, (b) the horizontal asymptote, (c) where `g` increases and decreases, (d) its relative extrema, and (e) its concavity and inflection points.', board: 'g(x) = F{x + 1}{x^2}', teach: T_SIGN,
+    steps: [
+      { lead: '(a) What are the domain of `g` and its vertical asymptote?', ok: 0, pick: [
+        ['Every `x` except 0, with a vertical asymptote at `x = 0`', 'The bottom `x^2` is 0 only at 0, and the top is 1 there, not 0, so the values blow up near 0.'],
+        ['Every `x` except `−1`, with a vertical asymptote at `x = −1`', '`x = −1` makes the top 0, so `g(−1) = 0`: a point on the x-axis. Only the bottom can make `g` undefined.'],
+        ['Every `x` except 0, with a hole at `x = 0`', 'A hole needs the top to be 0 too. Near 0 the top is near 1, so the values grow without bound: an asymptote.']] },
+      { lead: '(b) The bottom has the higher degree. Find the limit at infinity.', ask: 'lim{x→∞} g(x) =', num: true, ans: '0', teach: T_LIMINF,
+        wrongs: [['1', 'The ratio of leading coefficients is the limit only when the top and bottom have the same degree. Here the bottom’s degree, 2, is higher.'],
+          [['inf', 'infinity', '∞'], 'The bottom grows faster than the top, so the fraction shrinks toward 0.']],
+        hints: ['Divide the top and bottom by `x^2`: `F{F{1}{x} + F{1}{x^2}}{1}`.'],
+        why: 'So `y = 0` is the horizontal asymptote, on both sides.' },
+      { lead: '(c) Differentiate.', ask: 'g′(x) =', ans: '-(x + 2)/x^3', teach: T_QUOT,
+        wrongs: [['(x + 2)/x^3', 'Check the sign. With the quotient rule, the top is `1 · x^2 − (x + 1) · 2x = −x^2 − 2x`, which is `−x(x + 2)`.'],
+          ['1/(2x)', 'The derivative of a quotient is not the derivative of the top over the derivative of the bottom. Use the quotient rule, or write `g(x) = x^(−1) + x^(−2)` first.'],
+          [['(3x + 2)/x^3', '(x^2 + 2x(x + 1))/x^4'], 'The quotient rule subtracts: `F{("top")′ · "bottom" − "top" · ("bottom")′}{"bottom"^2}`.']],
+        hints: ['Split it first: `g(x) = F{x}{x^2} + F{1}{x^2} = x^(−1) + x^(−2)`. Then use the power rule on each term.'],
+        why: 'From the split form, `g′(x) = −x^(−2) − 2x^(−3) = F{−x − 2}{x^3}`.' },
+      { lead: 'List the critical points.', ask: '"critical points:" x =', list: true, num: true, ans: '-2',
+        wrongs: [[['-2, 0', '0'], '`g′(0)` does not exist, but neither does `g(0)`: 0 is not in the domain, so it is not a critical point.'],
+          ['2', 'Check the sign: `x + 2 = 0` gives `x = −2`.']],
+        hints: ['Set the top of `g′` equal to 0. Then check whether the zero of the bottom is in the domain.'] },
+      { lead: 'Where can `g′` change sign? These points split the number line for the sign chart.', ok: 0, pick: [
+        ['At `x = −2` and at `x = 0`', '`g′` can change sign where its top is 0 and where its bottom `x^3` is 0, even though 0 is not a critical point.'],
+        ['Only at `x = −2`', 'The bottom `x^3` changes sign at 0, so `g′` can change sign there too. Split the line at 0 as well.'],
+        ['At `x = −2`, `x = −1` and `x = 0`', '`x = −1` is where `g(x) = 0`. The sign of `g′` depends only on `x + 2` and `x^3`.']] },
+      { lead: 'Test `x = −3` in `g′(x) = F{−(x + 2)}{x^3}`.', ask: 'g′(−3) =', num: true, ans: '-1/27',
+        wrongs: [[['1/27', '0.037'], 'At `x = −3` the top is `−(−1) = 1` and the bottom is `(−3)^3 = −27`, so the quotient is negative.'],
+          [['-2/9', '-0.222'], 'That is `g(−3)`. Put the test point into the derivative `g′`, not into `g`.']],
+        hints: ['Top: `−(−3 + 2)`. Bottom: `(−3)^3`.'] },
+      { lead: 'Test `x = −1`.', ask: 'g′(−1) =', num: true, ans: '1',
+        wrongs: [['-1', 'The top is `−(−1 + 2) = −1` and the bottom is `(−1)^3 = −1`. A negative over a negative is positive.'],
+          ['0', 'That is `g(−1)`. Put the test point into the derivative `g′`, not into `g`.']],
+        hints: ['Top: `−(−1 + 2)`. Bottom: `(−1)^3`.'] },
+      { lead: 'A third test gives `g′(1) = −3`. Where is `g` increasing, and where is it decreasing?', ok: 0, pick: [
+        ['Decreasing on `(−∞, −2)` and `(0, ∞)`; increasing on `(−2, 0)`', '`g′(−3) < 0`, `g′(−1) > 0` and `g′(1) < 0`.'],
+        ['Decreasing on `(−∞, −2)`; increasing on `(−2, ∞)`', '`g′(1) = −3` is negative, so `g` decreases on `(0, ∞)`. The sign of `g′` changes at 0, where its bottom is 0.'],
+        ['Increasing on `(−∞, −2)` and `(0, ∞)`; decreasing on `(−2, 0)`', 'Those signs are reversed: `g′(−3) = −F{1}{27}` is negative.']] },
+      { lead: '(d) At `x = −2`, `g′` changes from − to +. Find the relative minimum value.', ask: 'g(−2) =', num: true, ans: '-1/4',
+        wrongs: [[['1/4', '0.25'], 'The top is `−2 + 1 = −1`, and the bottom `(−2)^2 = 4` is positive.'],
+          ['0', 'That is `g′(−2)`, which is 0 at a critical point. The value is `g(−2)`.'],
+          ['-2', 'That is where the relative minimum is. Its value is `g(−2)`.']],
+        hints: ['`g(−2) = F{−2 + 1}{(−2)^2}`.'] },
+      { lead: '`g′` changes from + to − at `x = 0`. Is there a relative maximum there?', ok: 0, pick: [
+        ['No: `g(0)` does not exist, and the graph climbs the asymptote on both sides', 'An extremum must be a point of the graph, and `g` has no value at 0.'],
+        ['Yes, because `g′` changes from + to − at 0', 'The sign change happens across an asymptote. `g` has no value at 0, so there is no point there to be a maximum.'],
+        ['Yes, at `(0, 1)`', '`g(0)` would need division by 0. The top is 1 at `x = 0`, but `g(0)` does not exist.']] },
+      { lead: '(e) Differentiate `g′(x) = −x^(−2) − 2x^(−3)`.', ask: 'g″(x) =', ans: '2(x + 3)/x^4', teach: T_CONC,
+        wrongs: [[['-2(x + 3)/x^4', '-2x^(-3) - 6x^(-4)'], 'Each term brings down a negative exponent, and two negatives make a positive: `−x^(−2)` becomes `+2x^(−3)`.'],
+          [['2x^(-3) - 6x^(-4)', '(2x - 6)/x^4'], 'The derivative of `−2x^(−3)` is `−2 · (−3)x^(−4) = +6x^(−4)`.']],
+        hints: ['Use the power rule on each term: bring the exponent down, then lower it by one.'],
+        why: 'That is `g″(x) = 2x^(−3) + 6x^(−4)`, which over one bottom is `F{2x + 6}{x^4} = F{2(x + 3)}{x^4}`.' },
+      { lead: 'Where is `g″(x) = 0`?', ask: 'x =', num: true, ans: '-3', teach: T_CONC,
+        wrongs: [['3', 'Check the sign: `x + 3 = 0` gives `x = −3`.'],
+          ['0', 'At 0 the bottom of `g″` is 0, so `g″(0)` does not exist, and 0 is not in the domain. Set the top `2(x + 3)` equal to 0.']],
+        hints: ['Set the top `2(x + 3)` equal to 0.'] },
+      { lead: 'The bottom `x^4` is positive for every `x ≠ 0`. Where is the graph concave up, and where concave down?', ok: 0, pick: [
+        ['Concave down on `(−∞, −3)`; concave up on `(−3, 0)` and `(0, ∞)`', '`g″` has the sign of `x + 3`: negative left of `−3`, positive right of it.'],
+        ['Concave up on `(−∞, −3)`; concave down on `(−3, 0)` and `(0, ∞)`', 'Test `x = −4`: `g″(−4) = F{2(−1)}{256}` is negative, so the graph is concave down there.'],
+        ['Concave down on `(−∞, −3)` and `(0, ∞)`; concave up on `(−3, 0)`', '`x^4` is positive on both sides of 0, so `g″` keeps the sign of `x + 3`, which is positive for `x > 0`.']] },
+      { lead: 'The concavity changes at `x = −3`, which is in the domain. Find the height of the inflection point.', ask: 'g(−3) =', num: true, ans: '-2/9', teach: T_CONC,
+        wrongs: [['2/9', 'The top is `−3 + 1 = −2`, and the bottom `(−3)^2 = 9` is positive.'],
+          ['0', 'That is `g″(−3)`. The height of the point is `g(−3)`.'],
+          ['-1/27', 'That is `g′(−3)`. The height of the point is `g(−3)`.']],
+        hints: ['`g(−3) = F{−3 + 1}{(−3)^2}`.'],
+        why: 'The inflection point is `(−3, −F{2}{9})`.' }],
+    graph: { x: [-6, 4], y: [-0.8, 2], ticks: { x: 1, y: 0.5 }, fns: [{ f: gM9, domain: [-6, -0.05] }, { f: gM9, domain: [0.05, 4] }],
+      dots: [{ x: -2, y: -0.25, label: 'min', at: 's' }, { x: -3, y: -2 / 9 }], texts: [{ x: -4.6, y: 0.8, text: 'inflection', to: [-3, -2 / 9] }],
+      aria: 'The graph of (x + 1) over x squared for x from −6 to 4. On the left it is just below the x-axis, falls to a relative minimum at (−2, −1/4) after an inflection point at (−3, −2/9), rises through (−1, 0) and climbs the y-axis, which is the vertical asymptote. On the right it comes down from high up and approaches the x-axis.' },
+    after: 'The y-axis is the vertical asymptote and the x-axis the horizontal one. The graph changes from concave down to concave up at `(−3, −F{2}{9})`, then reaches its relative minimum `(−2, −F{1}{4})`.' }
 ];
 
 /* ================================ builder (from practice-unit-03; fig, figCap and an optional board added) ================================ */
@@ -3344,7 +3758,7 @@ function backHTML() {
 function page() {
   return header('Unit 9 Practice', SECTIONS_P.map(function (s) { return ['#' + s.id, s.nav || s.title]; }).concat([['#sec-back', 'Next']])) +
     '<main id="top">' + hero({ kicker: 'Calculus I · Unit 9: What Derivatives Tell You', title: 'Unit 9 Practice',
-      dek: 'Use this page after you read Unit 9: What Derivatives Tell You and Unit 9 Worked Examples. For each problem, choose the method, then type each line of the work. Each line is checked before the next one opens. Type a power with ⟦^⟧, as in ⟦x^2⟧ or ⟦x^(2/3)⟧, and put a whole top or bottom in parentheses, as in ⟦(x + 1)/(x − 2)⟧.' }) +
+      dek: 'Use this page after you read Unit 9: What Derivatives Tell You and Unit 9 Worked Examples. For each problem, choose the method, then type each line of the work. Each line is checked before the next one opens. Problems 9 to 17, under More Practice, are optional. Type a power with ⟦^⟧, as in ⟦x^2⟧ or ⟦x^(2/3)⟧, and put a whole top or bottom in parentheses, as in ⟦(x + 1)/(x − 2)⟧.' }) +
     SECTIONS_P.map(sectionHTML).join('') + backHTML() + '</main>';
 }
 expose({ PROBLEMS: PROBLEMS, problemHTML: problemHTML, formProblem: formProblem, powProblem: powProblem, stepDone: stepDone });
@@ -3396,8 +3810,9 @@ selfcheck.add('a finished problem shows every step, Done and its closing figure;
   return bad.length ? { ok: false, detail: bad.join('; ') } : true;
 });
 
-selfcheck.add('every list of critical points is accepted in any order and as decimals', function () {
-  var cases = [['p1-4', '4, -1'], ['p3-4', '4, 0'], ['p4-4', '4,-2'], ['p5-3', '4, 2'], ['p6-5', '1, -3'], ['p7-3', '3, 0, -3'], ['p8-4', '-0.535, 1.869']];
+selfcheck.add('every list answer (critical points, extrema, inflection points) is accepted in any order and as decimals', function () {
+  var cases = [['p1-4', '4, -1'], ['p3-4', '4, 0'], ['p4-4', '4,-2'], ['p5-3', '4, 2'], ['p6-5', '1, -3'], ['p7-3', '3, 0, -3'], ['p8-4', '-0.535, 1.869'],
+    ['m1-4', '2.083'], ['m2-2', '4, -1'], ['m3-4', '1, 0'], ['m4-1', '2.5, -1'], ['m4-2', 'x = 1'], ['m7-2', '3, -2, 1'], ['m9-4', '-2']];
   var bad = cases.filter(function (c) { return judge(ITEMS[c[0]], c[1]).st !== 'ok'; }).map(function (c) { return c[0] + ' "' + c[1] + '" -> ' + judge(ITEMS[c[0]], c[1]).st; });
   return bad.length ? { ok: false, detail: bad.join('; ') } : { ok: true, detail: cases.length + ' cases' };
 });
